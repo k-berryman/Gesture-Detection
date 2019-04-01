@@ -1,6 +1,7 @@
 #include <iostream>
 #include <cstring>
 #include "Leap.h"
+#include <cpr/cpr.h>
 
 /* Gesture Dection with Leap Motion Sensor
  * Original code from Leap Motion
@@ -43,7 +44,7 @@ void SampleListener::onDisconnect(const Controller& controller) {
   std::cout << "Disconnected" << std::endl; }
 
 void SampleListener::onExit(const Controller& controller) {
-  std::cout << "Exited" << std::endl;   }
+  std::cout << "Exited" << std::endl; }
 
 void SampleListener::onFrame(const Controller& controller) {
   // Get the most recent frame and report some basic information
@@ -104,8 +105,7 @@ void SampleListener::onFrame(const Controller& controller) {
     const Tool tool = *tl;
     std::cout << std::string(2, ' ') <<  "Tool, id: " << tool.id()
               << ", position: " << tool.tipPosition()
-              << ", direction: " << tool.direction() << std::endl;
-  }
+              << ", direction: " << tool.direction() << std::endl; }
 
   // Get gestures
   const GestureList gestures = frame.gestures();
@@ -113,7 +113,6 @@ void SampleListener::onFrame(const Controller& controller) {
     Gesture gesture = gestures[g];
 
     switch (gesture.type()) {
-      
       case Gesture::TYPE_CIRCLE:
       {
         CircleGesture circle = gesture;
@@ -121,15 +120,25 @@ void SampleListener::onFrame(const Controller& controller) {
        
         if (circle.pointable().direction().angleTo(circle.normal()) <= PI/2)
 	{
-          clockwiseness = "clockwise";
           // COUNTERCLOCKWISE -- volume down
-          // PRINT THAT IT'S CC AND INCLUDE LINE TO SENT IT TO API
+          clockwiseness = "clockwise";
+          // PRINT THAT IT'S CC 
+		
+	  // LINE TO SENT INPUT TO CONTROLS/OWEN/DREW
+	  /* auto r = cpr::Post(cpr::Url{ "http://USE THEIR URL" },
+ 	   cpr::Body{ R"({"Id":??, "Name":"??","Qty":??,"Price":??})" },
+   	   cpr::Header{ { "Content-Type??", "application/json??" } }); */
         } 
 	else
 	{
-          clockwiseness = "counterclockwise";
 	  // COUNTERCLOCKWISE -- volume up
-          // PRINT THAT IT'S C AND INCLUDE LINE TO SENT IT TO API
+          clockwiseness = "counterclockwise";
+          // PRINT THAT IT'S C
+	  
+	  // LINE TO SENT INPUT TO CONTROLS/OWEN/DREW
+	  /* auto r = cpr::Post(cpr::Url{ "http://USE THEIR URL" },
+ 	   cpr::Body{ R"({"Id":??, "Name":"??","Qty":??,"Price":??})" },
+   	   cpr::Header{ { "Content-Type??", "application/json??" } }); */
         }
 
         // Calculate angle swept since last frame
@@ -145,27 +154,32 @@ void SampleListener::onFrame(const Controller& controller) {
                   << ", radius: " << circle.radius()
                   << ", angle " << sweptAngle * RAD_TO_DEG
                   <<  ", " << clockwiseness << std::endl;
-	//
 
         break;
       }
 
       case Gesture::TYPE_SWIPE:
       {
+	// SWIPING -- changing songs
         SwipeGesture swipe = gesture;
         std::cout << std::string(2, ' ')
           << "Swipe id: " << gesture.id()
           << ", state: " << stateNames[gesture.state()]
           << ", direction: " << swipe.direction()
           << ", speed: " << swipe.speed() << std::endl;
-	
-          // PRINT THAT IT'S SWIPING AND INCLUDE LINE TO SENT IT TO API, including direction
+          // PRINT THAT IT'S SWIPING
+	 
+	  // LINE TO SENT INPUT TO CONTROLS/OWEN/DREW
+	  /* auto r = cpr::Post(cpr::Url{ "http://USE THEIR URL" },
+ 	   cpr::Body{ R"({"Id":??, "Name":"??","Qty":??,"Price??":??})" },
+   	   cpr::Header{ { "Content-Type", "application/json??" } }); */
 	
         break;
       }
 
       case Gesture::TYPE_KEY_TAP:
       {
+	// Tap gesture code - not currently using
         KeyTapGesture tap = gesture;
         std::cout << std::string(2, ' ')
           << "Key Tap id: " << gesture.id()
